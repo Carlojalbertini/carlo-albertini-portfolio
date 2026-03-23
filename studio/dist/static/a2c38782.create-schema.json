@@ -1,0 +1,212 @@
+[
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "description": "Title as shown in the list (e.g. all caps or stylized)",
+        "name": "displayTitle",
+        "type": "string"
+      },
+      {
+        "options": {
+          "source": "title"
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug",
+        "title": "Slug (URL)"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "year",
+        "type": "string"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "E.g. Illustration, Etching, Illustration & Publishing",
+        "name": "category",
+        "type": "string"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Uppercase",
+              "value": "uppercase"
+            },
+            {
+              "title": "Italic",
+              "value": "italic"
+            },
+            {
+              "title": "Normal",
+              "value": "normal"
+            }
+          ],
+          "layout": "radio"
+        },
+        "initialValue": "normal",
+        "name": "titleStyle",
+        "type": "string"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "thumbnail",
+        "type": "image"
+      },
+      {
+        "rows": 4,
+        "name": "description",
+        "type": "text"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "options": {
+                  "hotspot": true
+                },
+                "name": "src",
+                "type": "image",
+                "title": "Image"
+              },
+              {
+                "name": "title",
+                "type": "string",
+                "title": "Image Title"
+              },
+              {
+                "name": "medium",
+                "type": "string",
+                "title": "Medium / Technique"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "images",
+        "type": "array",
+        "title": "Gallery Images"
+      },
+      {
+        "initialValue": 99,
+        "description": "Lower number = appears first in the list",
+        "name": "order",
+        "type": "number"
+      }
+    ],
+    "name": "project",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "rows": 5,
+        "description": "Il testo descrittivo che appare al centro della pagina",
+        "name": "bioText",
+        "type": "text"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "max",
+                "constraint": 9
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Carica fino a 9 immagini. Verranno disposte automaticamente nella pagina.",
+        "of": [
+          {
+            "fields": [
+              {
+                "options": {
+                  "hotspot": true
+                },
+                "name": "image",
+                "type": "image",
+                "title": "Immagine"
+              },
+              {
+                "name": "alt",
+                "type": "string",
+                "title": "Descrizione (alt text)"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "images",
+        "type": "array",
+        "title": "Immagini (max 9)"
+      }
+    ],
+    "name": "about",
+    "type": "document",
+    "title": "About Page"
+  }
+]
