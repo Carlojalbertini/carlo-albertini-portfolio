@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "createdAt": "2026-03-23T11:29:23.687Z",
+  "createdAt": "2026-03-24T10:50:05.632Z",
   "workspaces": [
     {
       "name": "carlo-albertini-portfolio",
@@ -12,7 +12,7 @@
       "mediaLibrary": {
         "enabled": false
       },
-      "schema": "a2c38782.create-schema.json",
+      "schema": "80728e6f.create-schema.json",
       "tools": "b3b146a5.create-tools.json"
     }
   ]

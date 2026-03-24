@@ -1,20 +1,21 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { motion } from "motion/react";
 import skullImg from "../../assets/d2a975953885db6531263265d531317fde593de9.png";
+import { fetchHomepage, type HomepageData } from "../../lib/queries";
 
 const MAX_ROTATE_Y = 18;
 const MAX_ROTATE_X = 8;
 
-const Skull = ({ delay = 0, className = "" }: { delay?: number; className?: string }) => (
+const Skull = ({ src, delay = 0, className = "" }: { src: string; delay?: number; className?: string }) => (
   <motion.div
     className={`relative inline-flex items-end justify-center ${className}`}
     initial={{ opacity: 0, scale: 0, rotate: -20, z: 0 }}
     animate={{ opacity: 1, scale: 1, rotate: 0, z: 50 }}
-    transition={{ 
+    transition={{
       type: "spring",
       stiffness: 50,
       damping: 15,
-      delay: delay 
+      delay: delay
     }}
     style={{
       width: "min(13vw, 15vh)",
@@ -24,9 +25,9 @@ const Skull = ({ delay = 0, className = "" }: { delay?: number; className?: stri
       transform: "translateY(8%)",
     }}
   >
-    <img 
-      src={skullImg} 
-      alt="Crystal Skull" 
+    <img
+      src={src}
+      alt="Crystal Skull"
       className="w-full h-full object-contain drop-shadow-2xl filter sepia-[0.3] brightness-90 contrast-125"
     />
   </motion.div>
@@ -35,6 +36,11 @@ const Skull = ({ delay = 0, className = "" }: { delay?: number; className?: stri
 export function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+  const [data, setData] = useState<HomepageData | null>(null);
+
+  useEffect(() => {
+    fetchHomepage().then((d) => { if (d) setData(d); });
+  }, []);
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -108,9 +114,9 @@ export function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1], delay: 0.3 }}
         >
-          <span className="text-[#d4c9b8]" style={textStyle}>Omnis</span>
-          <Skull delay={0.4} />
-          <span className="text-[#d4c9b8]" style={textStyle}>Ars</span>
+          <span className="text-[#d4c9b8]" style={textStyle}>{data?.line1Left ?? "Omnis"}</span>
+          <Skull src={data?.skull1 ?? skullImg} delay={0.4} />
+          <span className="text-[#d4c9b8]" style={textStyle}>{data?.line1Right ?? "Ars"}</span>
         </motion.div>
 
         {/* LINE 2: Ad [SKULL] Mortem */}
@@ -120,9 +126,9 @@ export function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1], delay: 0.5 }}
         >
-          <span className="text-[#d4c9b8] italic" style={textStyle}>Ad</span>
-          <Skull delay={0.6} />
-          <span className="text-[#d4c9b8] italic" style={textStyle}>Mortem</span>
+          <span className="text-[#d4c9b8] italic" style={textStyle}>{data?.line2Left ?? "Ad"}</span>
+          <Skull src={data?.skull2 ?? skullImg} delay={0.6} />
+          <span className="text-[#d4c9b8] italic" style={textStyle}>{data?.line2Right ?? "Mortem"}</span>
         </motion.div>
 
         {/* LINE 3: [SKULL] Pertinet */}
@@ -132,8 +138,8 @@ export function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1], delay: 0.7 }}
         >
-           <Skull delay={0.8} />
-          <span className="text-[#d4c9b8]" style={textStyle}>Pertinet</span>
+          <Skull src={data?.skull3 ?? skullImg} delay={0.8} />
+          <span className="text-[#d4c9b8]" style={textStyle}>{data?.line3Text ?? "Pertinet"}</span>
         </motion.div>
 
       </motion.div>

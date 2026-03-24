@@ -1,5 +1,44 @@
 import { client, urlFor } from "./sanityClient";
 
+const HOMEPAGE_QUERY = `
+  *[_type == "homepage"][0] {
+    "skull1": skull1.asset._ref,
+    "skull2": skull2.asset._ref,
+    "skull3": skull3.asset._ref,
+    line1Left,
+    line1Right,
+    line2Left,
+    line2Right,
+    line3Text
+  }
+`;
+
+export interface HomepageData {
+  skull1?: string;
+  skull2?: string;
+  skull3?: string;
+  line1Left?: string;
+  line1Right?: string;
+  line2Left?: string;
+  line2Right?: string;
+  line3Text?: string;
+}
+
+export async function fetchHomepage(): Promise<HomepageData | null> {
+  const raw = await client.fetch(HOMEPAGE_QUERY);
+  if (!raw) return null;
+  return {
+    skull1: raw.skull1 ? urlFor(raw.skull1).width(300).url() : undefined,
+    skull2: raw.skull2 ? urlFor(raw.skull2).width(300).url() : undefined,
+    skull3: raw.skull3 ? urlFor(raw.skull3).width(300).url() : undefined,
+    line1Left: raw.line1Left,
+    line1Right: raw.line1Right,
+    line2Left: raw.line2Left,
+    line2Right: raw.line2Right,
+    line3Text: raw.line3Text,
+  };
+}
+
 export interface ProjectImage {
   src: string;
   title: string;

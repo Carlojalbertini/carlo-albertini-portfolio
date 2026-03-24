@@ -6,14 +6,21 @@ import { fetchProjects, type Project } from "../../lib/queries";
 export function WorkMenu() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    fetchProjects().then((data) => {
-      setProjects(data);
-      setLoading(false);
-    });
+    fetchProjects()
+      .then((data) => {
+        setProjects(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch projects:", err);
+        setError(err?.message || "Failed to load projects");
+        setLoading(false);
+      });
   }, []);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -28,6 +35,19 @@ export function WorkMenu() {
           style={{ fontFamily: "'swear-display', serif", fontSize: "1rem" }}
         >
           Loading...
+        </p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p
+          className="text-[#d4c9b8]/30 italic"
+          style={{ fontFamily: "'swear-display', serif", fontSize: "1rem" }}
+        >
+          {error}
         </p>
       </div>
     );
