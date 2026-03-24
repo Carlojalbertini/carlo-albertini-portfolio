@@ -66,6 +66,7 @@ const ABOUT_QUERY = `
     images[] {
       "mediaType": coalesce(mediaType, "image"),
       "src": image.asset._ref,
+      "srcUrl": image.asset->url,
       "videoUrl": video.asset->url,
       alt
     }
@@ -80,13 +81,11 @@ export async function fetchAbout(): Promise<{ bioText?: string; images: { mediaT
     bioText: raw.bioText,
     images: (raw.images || []).map((img: any) => ({
       mediaType: img.mediaType || "image",
-      src: img.src
-        ? img.mediaType === "gif"
-          ? urlFor(img.src).url()
-          : img.mediaType === "video"
-          ? ""
-          : urlFor(img.src).width(1080).url()
-        : "",
+      src: img.mediaType === "gif"
+        ? (img.srcUrl || (img.src ? urlFor(img.src).url() : ""))
+        : img.mediaType === "video"
+        ? ""
+        : (img.src ? urlFor(img.src).width(1080).url() : ""),
       videoUrl: img.videoUrl || undefined,
       alt: img.alt || "",
     })),
@@ -106,6 +105,7 @@ const PROJECT_QUERY = `
     images[] {
       "mediaType": coalesce(mediaType, "image"),
       "src": image.asset._ref,
+      "srcUrl": image.asset->url,
       "videoUrl": video.asset->url,
       title,
       medium,
@@ -124,13 +124,11 @@ export async function fetchProjects(): Promise<Project[]> {
     thumbnail: urlFor(p.thumbnail).width(600).url(),
     images: (p.images || []).map((img: any) => ({
       ...img,
-      src: img.src
-        ? img.mediaType === "gif"
-          ? urlFor(img.src).url()
-          : img.mediaType === "video"
-          ? img.src
-          : urlFor(img.src).width(1600).url()
-        : "",
+      src: img.mediaType === "gif"
+        ? (img.srcUrl || (img.src ? urlFor(img.src).url() : ""))
+        : img.mediaType === "video"
+        ? ""
+        : (img.src ? urlFor(img.src).width(1600).url() : ""),
       videoUrl: img.videoUrl || undefined,
     })),
   }));
