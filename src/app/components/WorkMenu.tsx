@@ -95,10 +95,6 @@ export function WorkMenu() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1], delay: index * 0.08 }}
-                style={{
-                  opacity: hoveredIndex !== null && hoveredIndex !== index ? 0.25 : 1,
-                  transition: "opacity 0.4s ease",
-                }}
               >
                 {/* Year */}
                 <span
