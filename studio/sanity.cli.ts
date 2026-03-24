@@ -5,4 +5,5 @@ export default defineCliConfig({
     projectId: "4amrjh0n",
     dataset: "production",
   },
+  studioHost: "carlo-albertini",
 });
