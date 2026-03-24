@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" fill="#1F1F1F"/>
+  <!-- Left leg of A (bottom-left to top-center) -->
+  <path d="M12,92 C18,78 28,62 36,48 C41,39 46,28 50,8" stroke="#d4c9b8" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <!-- Small twig on left leg -->
+  <path d="M22,70 C18,66 14,63 10,62" stroke="#d4c9b8" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M32,52 C36,48 40,46 44,42" stroke="#d4c9b8" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+  <!-- Right leg of A (top-left to bottom-right) -->
+  <path d="M8,14 C18,24 32,40 44,54 C56,67 68,78 88,92" stroke="#d4c9b8" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <!-- Small twig on right leg -->
+  <path d="M62,72 C66,68 70,65 74,60" stroke="#d4c9b8" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M30,36 C26,30 24,26 22,20" stroke="#d4c9b8" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+  <!-- Crossbar -->
+  <path d="M20,58 C34,55 52,54 68,54 C76,54 82,55 88,56" stroke="#d4c9b8" stroke-width="6" stroke-linecap="round" fill="none"/>
+</svg>
