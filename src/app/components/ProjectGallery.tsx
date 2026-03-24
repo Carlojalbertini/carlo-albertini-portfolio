@@ -152,7 +152,7 @@ export function ProjectGallery() {
                       <img
                         src={image.src}
                         alt={image.title}
-                        className={`w-full h-auto ${image.mediaType !== "gif" ? "grayscale" : ""}`}
+                        className="w-full h-auto"
                       />
                       <div className="absolute inset-0 bg-[#1F1F1F]/15 group-hover:bg-transparent transition-all duration-700" />
                     </>
@@ -289,7 +289,7 @@ export function ProjectGallery() {
                 <img
                   src={selectedImage.src}
                   alt={selectedImage.title}
-                  className="max-w-full max-h-[80vh] object-contain grayscale"
+                  className="max-w-full max-h-[80vh] object-contain"
                 />
               )}
               <div className="mt-6 text-center">
