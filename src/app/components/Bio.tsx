@@ -3,6 +3,53 @@ import { motion, useScroll, useTransform, MotionValue } from "motion/react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { fetchAbout } from "../../lib/queries";
 
+// Animated word-by-word reveal for plain text from Sanity
+function AnimatedBioText({ text }: { text: string }) {
+  const words = text.split(" ").filter(Boolean);
+  return (
+    <>
+      {words.map((word, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 + i * 0.035, ease: [0.25, 0.1, 0.25, 1] }}
+          style={{ display: "inline" }}
+        >
+          {word}{" "}
+        </motion.span>
+      ))}
+    </>
+  );
+}
+
+type FallbackToken = { word: string; className?: string; style?: React.CSSProperties };
+const fallbackTokens: FallbackToken[] = [
+  { word: "Between" },
+  { word: "Symbolism", className: "italic" }, { word: "and", className: "italic" }, { word: "Baroque,", className: "italic" },
+  { word: "Carlo" }, { word: "Albertini" }, { word: "fuses" },
+  { word: "myth,", className: "italic", style: { color: "rgba(212,201,184,0.5)" } },
+  { word: "tribal,", className: "italic", style: { color: "rgba(212,201,184,0.5)" } },
+  { word: "post-war", className: "italic", style: { color: "rgba(212,201,184,0.5)" } },
+  { word: "and", className: "italic", style: { color: "rgba(212,201,184,0.5)" } },
+  { word: "cyberpunk", className: "italic", style: { color: "rgba(212,201,184,0.5)" } },
+  { word: "elements:", className: "italic", style: { color: "rgba(212,201,184,0.5)" } },
+  { word: "organic" }, { word: "and" }, { word: "technological" }, { word: "forms" },
+  { word: "hybridize," }, { word: "and" }, { word: "borders" }, { word: "vanish" },
+  { word: "into" }, { word: "the" }, { word: "line." },
+  { word: "Black" }, { word: "and" }, { word: "white" }, { word: "flips" },
+  { word: "life", className: "italic" }, { word: "and", className: "italic" }, { word: "death.", className: "italic" },
+  { word: "From" }, { word: "automatic" }, { word: "gestures" }, { word: "comes" },
+  { word: "a" }, { word: "cosmogony" }, { word: "of" }, { word: "insects," },
+  { word: "animals" }, { word: "and" }, { word: "humans" }, { word: "judged" },
+  { word: "by" }, { word: "higher" }, { word: "beings—" },
+  { word: '"illustrations"', className: "italic", style: { color: "rgba(212,201,184,0.5)" } },
+  { word: "for" },
+  { word: "lost", className: "italic" }, { word: "books", className: "italic" },
+  { word: "from", className: "italic" }, { word: "a", className: "italic" },
+  { word: "dark", className: "italic" }, { word: "future.", className: "italic" },
+];
+
 const fallbackImages = [
   {
     src: "https://images.unsplash.com/photo-1735823197840-c6eaa4869c12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXJrJTIwZ290aGljJTIwaW5rJTIwaWxsdXN0cmF0aW9uJTIwZGV0YWlsfGVufDF8fHx8MTc3MjE5MDcwMHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
@@ -261,12 +308,9 @@ export function Bio() {
         <div
           className="absolute inset-0 z-[1] flex items-center justify-center px-12 md:px-24 lg:px-36"
         >
-          <motion.div
+          <div
             className="max-w-5xl text-center"
             style={{ fontFamily: "'swear-display', serif" }}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1], delay: 0.2 }}
           >
             <p
               className="text-[#d4c9b8]"
@@ -276,33 +320,24 @@ export function Bio() {
                 fontWeight: 300,
               }}
             >
-              {bioText ?? (
-                <>
-                  Between{" "}
-                  <span className="italic">Symbolism and Baroque,</span>{" "}
-                  Carlo Albertini fuses{" "}
-                  <span
-                    className="italic text-[#d4c9b8]/50"
-                    style={{ fontFamily: "'swear-display', serif" }}
+              {bioText ? (
+                <AnimatedBioText text={bioText} />
+              ) : (
+                fallbackTokens.map((token, i) => (
+                  <motion.span
+                    key={i}
+                    className={token.className}
+                    style={{ ...token.style, display: "inline" }}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 + i * 0.035, ease: [0.25, 0.1, 0.25, 1] }}
                   >
-                    myth, tribal, post-war and cyberpunk elements:
-                  </span>{" "}
-                  organic and technological forms hybridize, and borders vanish into the line.{" "}
-                  Black and white flips{" "}
-                  <span className="italic">life and death.</span>{" "}
-                  From automatic gestures comes a cosmogony of insects, animals and humans judged by higher beings—
-                  <span
-                    className="italic text-[#d4c9b8]/50"
-                    style={{ fontFamily: "'swear-display', serif" }}
-                  >
-                    "illustrations"
-                  </span>{" "}
-                  for{" "}
-                  <span className="italic">lost books from a dark future.</span>
-                </>
+                    {token.word}{" "}
+                  </motion.span>
+                ))
               )}
             </p>
-          </motion.div>
+          </div>
         </div>
 
         {/* Image cards layer — z-2 (in front of text) */}
