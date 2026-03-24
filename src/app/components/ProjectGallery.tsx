@@ -136,14 +136,27 @@ export function ProjectGallery() {
               >
                 <div
                   className="group cursor-pointer relative overflow-hidden"
-                  onClick={() => setSelectedImage(image)}
+                  onClick={() => image.mediaType !== "video" ? setSelectedImage(image) : undefined}
                 >
-                  <img
-                    src={image.src}
-                    alt={image.title}
-                    className="w-full h-auto grayscale"
-                  />
-                  <div className="absolute inset-0 bg-[#1F1F1F]/15 group-hover:bg-transparent transition-all duration-700" />
+                  {image.mediaType === "video" && image.videoUrl ? (
+                    <video
+                      src={image.videoUrl}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-auto"
+                    />
+                  ) : (
+                    <>
+                      <img
+                        src={image.src}
+                        alt={image.title}
+                        className={`w-full h-auto ${image.mediaType !== "gif" ? "grayscale" : ""}`}
+                      />
+                      <div className="absolute inset-0 bg-[#1F1F1F]/15 group-hover:bg-transparent transition-all duration-700" />
+                    </>
+                  )}
                 </div>
 
                 <div className="mt-4 flex items-baseline justify-between">
@@ -266,11 +279,19 @@ export function ProjectGallery() {
               transition={{ duration: 0.4 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <img
-                src={selectedImage.src}
-                alt={selectedImage.title}
-                className="max-w-full max-h-[80vh] object-contain"
-              />
+              {selectedImage.mediaType === "gif" ? (
+                <img
+                  src={selectedImage.src}
+                  alt={selectedImage.title}
+                  className="max-w-full max-h-[80vh] object-contain"
+                />
+              ) : (
+                <img
+                  src={selectedImage.src}
+                  alt={selectedImage.title}
+                  className="max-w-full max-h-[80vh] object-contain grayscale"
+                />
+              )}
               <div className="mt-6 text-center">
                 <p
                   className="text-[#d4c9b8] italic"

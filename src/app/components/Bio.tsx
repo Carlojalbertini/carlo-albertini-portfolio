@@ -112,6 +112,8 @@ function easeOutPow(t: number, pow: number): number {
 
 type CardImage = {
   src: string;
+  videoUrl?: string;
+  mediaType?: string;
   alt: string;
   finalLeft: string;
   finalTop: string;
@@ -194,14 +196,28 @@ function ScrollCard({
         animate={{ x: hover.x, y: hover.y }}
         transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
       >
-        <ImageWithFallback
-          src={image.src}
-          alt={image.alt}
-          className="w-full h-full object-cover scale-105"
-          style={{
-            filter: "grayscale(80%) contrast(1.1) sepia(15%)",
-          }}
-        />
+        {image.mediaType === "video" && image.videoUrl ? (
+          <video
+            src={image.videoUrl}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover scale-105"
+            style={{ filter: "grayscale(80%) contrast(1.1) sepia(15%)" }}
+          />
+        ) : (
+          <ImageWithFallback
+            src={image.src}
+            alt={image.alt}
+            className="w-full h-full object-cover scale-105"
+            style={{
+              filter: image.mediaType === "gif"
+                ? "none"
+                : "grayscale(80%) contrast(1.1) sepia(15%)",
+            }}
+          />
+        )}
       </motion.div>
     </motion.div>
   );
@@ -227,6 +243,8 @@ export function Bio() {
         setImages(
           data.images.map((img, i) => ({
             src: img.src,
+            videoUrl: img.videoUrl,
+            mediaType: img.mediaType,
             alt: img.alt,
             ...imageLayout[i % imageLayout.length],
           }))

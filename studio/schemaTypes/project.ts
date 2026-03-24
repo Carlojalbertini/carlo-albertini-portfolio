@@ -66,34 +66,10 @@ export const project = defineType({
     }),
     defineField({
       name: "images",
-      title: "Gallery Images",
+      title: "Gallery (immagini, GIF, video)",
+      description: "Aggiungi immagini statiche, GIF animate o video alla gallery del progetto.",
       type: "array",
-      of: [
-        {
-          type: "object",
-          fields: [
-            defineField({
-              name: "src",
-              title: "Image",
-              type: "image",
-              options: { hotspot: true },
-            }),
-            defineField({
-              name: "title",
-              title: "Image Title",
-              type: "string",
-            }),
-            defineField({
-              name: "medium",
-              title: "Medium / Technique",
-              type: "string",
-            }),
-          ],
-          preview: {
-            select: { title: "title", media: "src" },
-          },
-        },
-      ],
+      of: [{ type: "mediaAsset" }],
     }),
     defineField({
       name: "order",
