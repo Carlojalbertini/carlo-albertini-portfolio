@@ -126,38 +126,6 @@ export function WorkMenu() {
           ))}
         </div>
 
-        {/* Personal projects link */}
-        <motion.div
-          className="mt-10 md:mt-14"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1], delay: projects.length * 0.08 + 0.15 }}
-        >
-          <Link
-            to="/work/personal"
-            className="no-underline group inline-flex items-center gap-4"
-          >
-            <span
-              className="text-[#d4c9b8]/50 group-hover:text-[#d4c9b8] transition-colors duration-500"
-              style={{
-                fontFamily: "'swear-display', serif",
-                fontSize: "1.5rem",
-              }}
-            >
-              &rarr;
-            </span>
-            <span
-              className="text-[#d4c9b8]/50 group-hover:text-[#d4c9b8] transition-colors duration-500 italic"
-              style={{
-                fontFamily: "'swear-display', serif",
-                fontSize: "clamp(1.5rem, 4vw, 2.5rem)",
-                fontWeight: 300,
-              }}
-            >
-              Personal projects
-            </span>
-          </Link>
-        </motion.div>
       </div>
     </div>
   );

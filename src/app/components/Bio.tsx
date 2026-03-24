@@ -154,26 +154,22 @@ function ScrollCard({
   const easePow = cardEaseExponents[index] || 6;
   const easeFn = (t: number) => easeOutPow(t, easePow);
 
-  const y = useTransform(
+  const yRaw = useTransform(
     scrollYProgress,
     [start, end],
-    ["120vh", "0vh"],
+    [120, 0],
     { ease: easeFn }
   );
 
-  const yClamped = useTransform(y, (v) => v);
-
-  const opacity = useTransform(
-    scrollYProgress,
-    [start, start + baseSegment * 0.35, end],
-    [0, 1, 1]
-  );
+  // Clamp manuale: y non scende mai sotto 0 né supera 120 → evita che le card
+  // escano dal top del container overflow-hidden dopo aver completato l'animazione
+  const y = useTransform(yRaw, (v) => `${Math.max(0, Math.min(120, v))}vh`);
 
   const scale = useTransform(
     scrollYProgress,
     [start, end],
     [0.92, 1],
-    { ease: easeFn }
+    { ease: easeFn, clamp: true }
   );
 
   return (
@@ -187,8 +183,7 @@ function ScrollCard({
         aspectRatio: image.aspectRatio,
         zIndex: image.zIndex,
         rotate: image.rotate,
-        y: yClamped,
-        opacity,
+        y,
         scale,
       }}
       onMouseMove={handleMouseMove}
