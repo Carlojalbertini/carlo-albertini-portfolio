@@ -40,9 +40,12 @@ export async function fetchHomepage(): Promise<HomepageData | null> {
 }
 
 export interface ProjectImage {
+  mediaType: "image" | "gif" | "video";
   src: string;
+  videoUrl?: string;
   title: string;
   medium: string;
+  alt?: string;
 }
 
 export interface Project {
@@ -61,20 +64,30 @@ const ABOUT_QUERY = `
   *[_type == "about"][0] {
     bioText,
     images[] {
+      "mediaType": coalesce(mediaType, "image"),
       "src": image.asset._ref,
+      "videoUrl": video.asset->url,
       alt
     }
   }
 `;
 
-export async function fetchAbout(): Promise<{ bioText?: string; images: { src: string; alt: string }[] } | null> {
+export async function fetchAbout(): Promise<{ bioText?: string; images: { mediaType: string; src: string; videoUrl?: string; alt: string }[] } | null> {
   const raw = await client.fetch(ABOUT_QUERY);
   if (!raw) return null;
 
   return {
     bioText: raw.bioText,
     images: (raw.images || []).map((img: any) => ({
-      src: urlFor(img.src).width(1080).url(),
+      mediaType: img.mediaType || "image",
+      src: img.src
+        ? img.mediaType === "gif"
+          ? urlFor(img.src).url()
+          : img.mediaType === "video"
+          ? ""
+          : urlFor(img.src).width(1080).url()
+        : "",
+      videoUrl: img.videoUrl || undefined,
       alt: img.alt || "",
     })),
   };
@@ -91,9 +104,12 @@ const PROJECT_QUERY = `
     "thumbnail": thumbnail.asset._ref,
     description,
     images[] {
-      "src": src.asset._ref,
+      "mediaType": coalesce(mediaType, "image"),
+      "src": image.asset._ref,
+      "videoUrl": video.asset->url,
       title,
-      medium
+      medium,
+      alt
     }
   }
 `;
@@ -108,7 +124,14 @@ export async function fetchProjects(): Promise<Project[]> {
     thumbnail: urlFor(p.thumbnail).width(600).url(),
     images: (p.images || []).map((img: any) => ({
       ...img,
-      src: urlFor(img.src).width(1600).url(),
+      src: img.src
+        ? img.mediaType === "gif"
+          ? urlFor(img.src).url()
+          : img.mediaType === "video"
+          ? img.src
+          : urlFor(img.src).width(1600).url()
+        : "",
+      videoUrl: img.videoUrl || undefined,
     })),
   }));
 }

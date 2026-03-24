@@ -1,5 +1,6 @@
 import { project } from "./project";
 import { about } from "./about";
 import { homepage } from "./homepage";
+import { mediaAsset } from "./mediaAsset";
 
-export const schemaTypes = [project, about, homepage];
+export const schemaTypes = [mediaAsset, project, about, homepage];
