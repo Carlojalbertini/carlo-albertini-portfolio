@@ -25,7 +25,7 @@ export function Layout() {
             className="text-white no-underline"
             style={{
               fontFamily: "'swear-display', serif",
-              fontSize: "0.85rem",
+              fontSize: "12px",
               fontWeight: 400,
               letterSpacing: "0.05em",
             }}
@@ -45,7 +45,7 @@ export function Layout() {
               className="text-white no-underline tracking-[0.15em] uppercase transition-opacity duration-300 hover:opacity-60"
               style={{
                 fontFamily: "'swear-display', serif",
-                fontSize: "0.7rem",
+                fontSize: "12px",
               }}
             >
               Work
@@ -61,7 +61,7 @@ export function Layout() {
               className="text-white no-underline tracking-[0.15em] uppercase transition-opacity duration-300 hover:opacity-60"
               style={{
                 fontFamily: "'swear-display', serif",
-                fontSize: "0.7rem",
+                fontSize: "12px",
               }}
             >
               About
