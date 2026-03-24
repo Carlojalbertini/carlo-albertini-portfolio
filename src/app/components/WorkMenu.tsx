@@ -91,7 +91,7 @@ export function WorkMenu() {
               onMouseLeave={() => setHoveredIndex(null)}
             >
               <motion.div
-                className="flex items-baseline gap-4 md:gap-8 py-4 md:py-5 border-b border-[#d4c9b8]/[0.06] transition-all duration-500"
+                className="flex items-baseline gap-4 md:gap-8 py-4 md:py-5 border-b border-[#d4c9b8]/[0.06]"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1], delay: index * 0.08 }}
