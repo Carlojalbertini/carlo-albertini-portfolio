@@ -8,6 +8,15 @@ export function ProjectGallery() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<ProjectImage | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   useEffect(() => {
     fetchProjects().then((data) => {
@@ -135,8 +144,8 @@ export function ProjectGallery() {
                 transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
               >
                 <div
-                  className="group cursor-pointer relative overflow-hidden"
-                  onClick={() => image.mediaType !== "video" ? setSelectedImage(image) : undefined}
+                  className={`group relative overflow-hidden${!isMobile && image.mediaType !== "video" ? " cursor-pointer" : ""}`}
+                  onClick={() => !isMobile && image.mediaType !== "video" ? setSelectedImage(image) : undefined}
                 >
                   {image.mediaType === "video" && image.videoUrl ? (
                     <video

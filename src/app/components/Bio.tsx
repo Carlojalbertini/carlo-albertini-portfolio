@@ -281,6 +281,15 @@ export function Bio() {
     fallbackImages.map((img) => ({ src: img.src, alt: img.alt, finalLeft: img.finalLeft, finalTop: img.finalTop, width: img.width, aspectRatio: img.aspectRatio, rotate: img.rotate, zIndex: img.zIndex }))
   );
   const [bioText, setBioText] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   useEffect(() => {
     fetchAbout().then((data) => {
@@ -300,6 +309,47 @@ export function Bio() {
     });
   }, []);
 
+  const bioContent = (
+    <p
+      className="text-[#d4c9b8]"
+      style={{
+        fontSize: isMobile ? "clamp(17px, 4.5vw, 22px)" : "clamp(28px, 3.5vw, 40px)",
+        lineHeight: 1.25,
+        fontWeight: 300,
+      }}
+    >
+      {bioText ? (
+        <AnimatedBioText text={bioText} />
+      ) : (
+        fallbackTokens.map((token, i) => (
+          <motion.span
+            key={i}
+            className={token.className}
+            style={{ ...token.style, display: "inline" }}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 + i * 0.035, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            {token.word}{" "}
+          </motion.span>
+        ))
+      )}
+    </p>
+  );
+
+  if (isMobile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-8 py-32">
+        <div
+          className="max-w-5xl text-center"
+          style={{ fontFamily: "'swear-display', serif" }}
+        >
+          {bioContent}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div ref={containerRef} className="relative" style={{ height: "950vh" }}>
       {/* Sticky wrapper: text + cards pinned to viewport */}
@@ -312,31 +362,7 @@ export function Bio() {
             className="max-w-5xl text-center"
             style={{ fontFamily: "'swear-display', serif" }}
           >
-            <p
-              className="text-[#d4c9b8]"
-              style={{
-                fontSize: "clamp(28px, 3.5vw, 40px)",
-                lineHeight: 1.25,
-                fontWeight: 300,
-              }}
-            >
-              {bioText ? (
-                <AnimatedBioText text={bioText} />
-              ) : (
-                fallbackTokens.map((token, i) => (
-                  <motion.span
-                    key={i}
-                    className={token.className}
-                    style={{ ...token.style, display: "inline" }}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 + i * 0.035, ease: [0.25, 0.1, 0.25, 1] }}
-                  >
-                    {token.word}{" "}
-                  </motion.span>
-                ))
-              )}
-            </p>
+            {bioContent}
           </div>
         </div>
 
